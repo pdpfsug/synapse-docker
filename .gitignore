@@ -1,0 +1,9 @@
+.env
+synapse/*
+certs/*
+coturn/*
+nginx/*
+
+!synapse/homeserver.yaml.example
+!coturn/turnserver.conf.example
+!nginx/nginx.conf.example

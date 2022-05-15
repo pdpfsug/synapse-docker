@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  synapse:
+    image: matrixdotorg/synapse:latest
+    volumes:
+      - ./synapse:/data
+      - ./coturn:/data/coturn
+      - ./certs/:/etc/letsencrypt
+    environment:
+      VIRTUAL_HOST: ${HOSTNAME}
+      VIRTUAL_PORT: 8008
+      LETSENCRYPT_HOST: ${HOSTNAME}
+      SYNAPSE_SERVER_NAME: ${HOSTNAME}
+      UID: 0
+      GID: 0
+    links:
+      - "database:database"
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  database:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./utils/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
+
+  reverse-proxy:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8448:8448
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./certs/:/etc/letsencrypt
+
+  coturn:
+    image: instrumentisto/coturn:latest
+    restart: unless-stopped
+    volumes:
+      - ./coturn/turnserver.conf:/etc/coturn/turnserver.conf
+    ports:
+      - 3478:3478
+      - 5349:5349
+      - 49160-49200:49160-49200/udp
+
+volumes:
+  postgres-data: {}
