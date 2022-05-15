@@ -5,7 +5,7 @@ services:
     image: matrixdotorg/synapse:latest
     volumes:
       - ./synapse:/data
-      - ./coturn:/data/coturn
+      - ./coturn:/data/matrix/coturn
       - ./certs/:/etc/letsencrypt
     environment:
       VIRTUAL_HOST: ${HOSTNAME}
