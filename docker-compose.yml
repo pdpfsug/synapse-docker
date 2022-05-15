@@ -12,6 +12,7 @@ services:
       VIRTUAL_PORT: 8008
       LETSENCRYPT_HOST: ${HOSTNAME}
       SYNAPSE_SERVER_NAME: ${HOSTNAME}
+      SYNAPSE_REPORT_STATS: "false"
       UID: 0
       GID: 0
     links:
