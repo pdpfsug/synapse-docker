@@ -42,7 +42,7 @@ database:
     name: psycopg2
     args:
         host: database
-        database: ${POSTGRES_DB}
+        database: synapse
         user: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
         cp_min: 5
