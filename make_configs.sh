@@ -13,4 +13,8 @@ done
 # Create config files
 envsubst < coturn/turnserver.conf.example > coturn/turnserver.conf
 envsubst < nginx/nginx.conf.example > nginx/nginx.conf
+
+# Run twice since the generation command overwrites some configs (turn server)
+envsubst < synapse/homeserver.yaml.example > synapse/homeserver.yaml
+docker-compose run synapse migrate_config
 envsubst < synapse/homeserver.yaml.example > synapse/homeserver.yaml
