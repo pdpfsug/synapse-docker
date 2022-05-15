@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+# Some variables for nginx
+export REMOTE_ADDR="\$remote_addr"
+export SCHEME="\$scheme"
+export HOST="\$host"
+
 # Export the environment variables
 for var in $(cat .env); do
   export $var
